@@ -331,7 +331,7 @@ app.use(ElevaRouter, {
 
 Join our community for support, discussions, and collaboration:
 
-- **Contribution Guidelines** [Eleva Contribution Guidelines](https://github.com/TarekRaafat/eleva-router/blob/main/CONTRIBUTING.md)
+- **Contribution Guidelines** [Eleva Contribution Guidelines](https://github.com/TarekRaafat/eleva-router/blob/master/CONTRIBUTING.md)
 - **GitHub Discussions:** For general questions or new ideas please start a discussion on [Eleva Router Discussions](https://github.com/TarekRaafat/eleva-router/discussions)
 - **GitHub Issues:** Report bugs or request features on [GitHub Issues](https://github.com/TarekRaafat/eleva-router/issues)
 - **Stack Overflow:** For technical questions and support, please post your question on Stack Overflow using any of these tags [eleva](https://stackoverflow.com/questions/tagged/eleva), [eleva.js](https://stackoverflow.com/questions/tagged/eleva.js)
