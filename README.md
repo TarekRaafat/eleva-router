@@ -73,6 +73,18 @@ Install via npm:
 npm install eleva-router
 ```
 
+Or include it directly via CDN:
+
+```html
+<!-- unpkg -->
+<script src="https://unpkg.com/eleva-router/dist/eleva-router.min.js"></script>
+```
+
+```html
+<!-- jsDelivr -->
+<script src="https://cdn.jsdelivr.net/npm/eleva-router/dist/eleva-router.min.js"></script>
+```
+
 ---
 
 ## Configuration Options
