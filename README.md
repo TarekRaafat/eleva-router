@@ -4,7 +4,7 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-<!-- [![Version](https://img.shields.io/npm/v/@eleva/router.svg?style=flat)](https://www.npmjs.com/package/@eleva/router)
+<!-- [![Version](https://img.shields.io/npm/v/eleva-router.svg?style=flat)](https://www.npmjs.com/package/eleva-router)
 [![Minified Size](https://badgen.net/bundlephobia/min/eleva-router)](https://bundlephobia.com/package/eleva-router)
 [![Gzipped Size](https://badgen.net/bundlephobia/minzip/eleva-router)](https://bundlephobia.com/package/eleva-router) -->
 
@@ -45,7 +45,7 @@
 
 ## Overview
 
-**@eleva/router** extends Eleva.js with robust client-side routing functionality. It supports three routing modes:
+**Eleva Router** extends Eleva.js with robust client-side routing functionality. It supports three routing modes:
 
 - **Hash-based Routing:** Uses URL hash (e.g. `#/pageName`).
 - **Query-based Routing:** Uses URL query parameters (e.g. `?page=pageName`).
@@ -71,7 +71,7 @@ The plugin automatically injects the current route information—such as path, q
 Install via npm:
 
 ```bash
-npm install @eleva/router
+npm install eleva-router
 ```
 
 ---
@@ -108,7 +108,7 @@ Below is an example of how to set up **Eleva Router** with Eleva.js:
 
 ```js
 import Eleva from "eleva";
-import ElevaRouter from "@eleva/router";
+import ElevaRouter from "eleva-router";
 
 const app = new Eleva("MyApp");
 

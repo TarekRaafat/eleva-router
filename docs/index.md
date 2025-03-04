@@ -40,7 +40,7 @@
 
 ## Overview
 
-The **@eleva/router** plugin extends Eleva.js with client-side routing capabilities. It supports:
+The **Eleva Router** plugin extends Eleva.js with client-side routing capabilities. It supports:
 
 - **Hash-based Routing:** Uses URL hash (e.g., `#/pageName`) for routing.
 - **Query-based Routing:** Uses URL query parameters (e.g., `?page=pageName`) where the `page` query is used as the route.
@@ -66,7 +66,7 @@ The plugin automatically injects a `route` object and a `navigate` function into
 Install via npm:
 
 ```bash
-npm install @eleva/router
+npm install eleva-router
 ```
 
 ---
@@ -103,7 +103,7 @@ Below is an example of setting up Eleva Router with Eleva.js:
 
 ```js
 import Eleva from "eleva";
-import ElevaRouter from "@eleva/router";
+import ElevaRouter from "eleva-router";
 
 const app = new Eleva("MyApp");
 

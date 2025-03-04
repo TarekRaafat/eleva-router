@@ -1,5 +1,5 @@
 {
-  "name": "@eleva/router",
+  "name": "eleva-router",
   "version": "1.0.0-alpha",
   "description": "A Router Plugin for Eleva.",
   "type": "module",
