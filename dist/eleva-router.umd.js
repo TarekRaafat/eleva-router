@@ -1,4 +1,4 @@
-/* @eleva/router v1.0.0-alpha | MIT License */
+/* eleva-router v1.0.2-alpha | MIT License */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :

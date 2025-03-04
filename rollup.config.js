@@ -6,7 +6,6 @@ import pkg from "./package.json" assert { type: "json" };
 
 export default {
   input: "src/index.js",
-  context: "window",
   output: [
     {
       file: "dist/eleva-router.umd.js",
@@ -14,7 +13,7 @@ export default {
       name: "ElevaRouter",
       exports: "default",
       sourcemap: true,
-      banner: `/* @eleva/router v${pkg.version} | MIT License */`,
+      banner: `/* eleva-router v${pkg.version} | MIT License */`,
     },
     {
       file: "dist/eleva-router.esm.js",
@@ -22,7 +21,7 @@ export default {
       name: "ElevaRouter",
       exports: "default",
       sourcemap: true,
-      banner: `/* @eleva/router v${pkg.version} | MIT License */`,
+      banner: `/* eleva-router v${pkg.version} | MIT License */`,
     },
     {
       file: "dist/eleva-router.min.js",

@@ -1,4 +1,4 @@
-/* @eleva/router v1.0.0-alpha | MIT License */
+/* eleva-router v1.0.2-alpha | MIT License */
 /**
  * @class Router
  * @classdesc A router for Eleva.js that supports multiple routing modes:
