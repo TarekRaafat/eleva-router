@@ -73,9 +73,11 @@ npm install eleva-router
 Or include it directly via CDN:
 
 ```html
-<!-- jsDelivr -->
+<!-- jsDelivr (Recommended) -->
 <script src="https://cdn.jsdelivr.net/npm/eleva-router"></script>
 ```
+
+or
 
 ```html
 <!-- unpkg -->
