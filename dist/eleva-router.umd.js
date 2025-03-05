@@ -1,4 +1,4 @@
-/* eleva-router v1.0.2-alpha | MIT License */
+/* eleva-router v1.0.4-alpha | MIT License */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -7,10 +7,16 @@
 
   /**
    * @class Router
-   * @classdesc A router for Eleva.js that supports multiple routing modes:
-   * "hash", "query", and "history". It extracts the current route information
-   * (path, query parameters, full URL) and injects it into routed components'
-   * setup context along with a `navigate` function.
+   * @classdesc A Router Plugin for Eleva.js with Multiple Routing Modes
+   *
+   * This plugin provides client-side routing functionality for Eleva.js applications.
+   * It supports hash-based (e.g. "#pageName"), query-based (e.g. "?page=pageName"),
+   * and history-based (e.g. "/pageName") routing. The routing mode is configurable via
+   * the plugin options.
+   *
+   * In addition to injecting route information (current path, query parameters,
+   * and full URL) directly into the component's setup context as `route`, this plugin
+   * also injects a `navigate` function so developers can programmatically navigate from within components.
    *
    * @param {Object} eleva - The Eleva instance.
    * @param {Object} options - Router configuration options.
@@ -60,22 +66,28 @@
       let path, queryString, fullUrl;
       if (this.mode === "hash") {
         fullUrl = window.location.href;
-        let hash = window.location.hash.slice(1) || "/";
+        let hash = window.location.hash.slice(1) || "";
         [path, queryString] = hash.split("?");
+        // If path is empty, default to "/"
         path = path || "/";
       } else if (this.mode === "query") {
         fullUrl = window.location.href;
         const search = window.location.search; // e.g. ?page=about&foo=bar
         const urlParams = new URLSearchParams(search);
-        path = urlParams.get("page") || "/";
+        path = urlParams.get("page") || "";
         urlParams.delete("page");
         queryString = urlParams.toString();
+        path = path || "/";
       } else if (this.mode === "history") {
         fullUrl = window.location.href;
         path = window.location.pathname || "/";
         queryString = window.location.search ? window.location.search.slice(1) : "";
       } else {
         throw new Error("Invalid router mode: " + this.mode);
+      }
+      // Normalize the path: Ensure it starts with '/'
+      if (path.charAt(0) !== "/") {
+        path = "/" + path;
       }
       const query = this.parseQuery(queryString);
       // Try to find a matching route for the current path.
@@ -91,6 +103,8 @@
           fullUrl
         });
         const props = route.props || {};
+        // For all modes, clear the container before mounting the new route.
+        this.container.innerHTML = "";
         this.eleva.mount(this.container, wrappedComponent, props);
       }
     }
@@ -129,11 +143,23 @@
      */
     navigate(path) {
       if (this.mode === "hash") {
-        window.location.hash = path;
+        // In hash mode, if navigating to home ("/"), remove the hash entirely.
+        if (path === "/" || path === "") {
+          // Remove the hash entirely using replaceState and update the view.
+          history.replaceState(null, "", window.location.pathname + window.location.search);
+          this.routeChanged();
+        } else {
+          window.location.hash = path;
+        }
       } else if (this.mode === "query") {
         const urlParams = new URLSearchParams(window.location.search);
-        urlParams.set("page", path);
-        const newUrl = window.location.pathname + "?" + urlParams.toString();
+        if (path === "/" || path === "") {
+          urlParams.delete("page");
+        } else {
+          urlParams.set("page", path);
+        }
+        const newQuery = urlParams.toString();
+        const newUrl = window.location.pathname + (newQuery ? "?" + newQuery : "");
         history.pushState({}, "", newUrl);
         this.routeChanged();
       } else if (this.mode === "history") {
@@ -172,12 +198,10 @@
       };
       const originalSetup = wrapped.setup;
       wrapped.setup = ctx => {
-        const data = originalSetup ? originalSetup(ctx) : {};
+        ctx.route = routeInfo;
+        ctx.navigate = this.navigate.bind(this);
         // Inject route information and navigation function into the context.
-        return Object.assign({}, data, {
-          route: routeInfo,
-          navigate: this.navigate.bind(this)
-        });
+        return originalSetup ? originalSetup(ctx) : {};
       };
       return wrapped;
     }
@@ -186,7 +210,7 @@
   /**
    * @typedef {Object} RouteDefinition
    * @property {string} path - The URL path (e.g., "/" or "/about").
-   * @property {string|Object} component - The component name (if registered globally) or component definition.
+   * @property {string|Object} component - The component name (if registered globally) or a component definition.
    * @property {Object} [props] - Additional properties to pass to the routed component.
    */
 
@@ -200,69 +224,20 @@
 
   /**
    * @namespace ElevaRouter
-   * @description ElevaRouter is the official router plugin for Eleva.js. It provides client-side routing
+   * @description ElevaRouter is the official router plugin for Eleva.js.
+   *
+   * It provides client-side routing
    * functionality with support for multiple routing modes, automatic component registration, and route
    * information injection into the setup context.
+   *
+   * Installs the ElevaRouter plugin into an Eleva.js instance.
+   * Automatically registers routed components if provided as definitions.
+   *
+   * @param {Object} eleva - The Eleva instance.
+   * @param {RouterOptions} options - Router configuration options.
+   * @returns {void}
    */
   const ElevaRouter = {
-    /**
-     * Installs the ElevaRouter plugin into an Eleva.js instance.
-     * Automatically registers routed components if provided as definitions.
-     *
-     * @param {Object} eleva - The Eleva instance.
-     * @param {RouterOptions} options - Router configuration options.
-     * @returns {void}
-     *
-     * @example
-     * import Eleva from "eleva";
-     * import ElevaRouter from "@eleva/router";
-     *
-     * const app = new Eleva("MyApp");
-     *
-     * const HomeComponent = {
-     *   setup: ({ route }) => {
-     *     console.log("Current route:", route.path);
-     *     return {};
-     *   },
-     *   template: () => `<div>Welcome Home!</div>`
-     * };
-     *
-     * const AboutComponent = {
-     *   setup: ({ route, navigate }) => {
-     *     function goHome() { navigate("/"); }
-     *     return { goHome };
-     *   },
-     *   template: (ctx) => `
-     *     <div>
-     *       <h1>About Us</h1>
-     *       <button @click="goHome">Go Home</button>
-     *     </div>
-     *   `
-     * };
-     *
-     * const NotFoundComponent = {
-     *   setup: ({ route, navigate }) => ({ goHome: () => navigate("/") }),
-     *   template: (ctx) => `
-     *     <div>
-     *       <h1>404 - Not Found</h1>
-     *       <button @click="goHome">Return Home</button>
-     *     </div>
-     *   `
-     * };
-     *
-     * app.use(ElevaRouter, {
-     *   container: document.getElementById("view"),
-     *   mode: "history", // "hash", "query", or "history"
-     *   routes: [
-     *     { path: "/", component: HomeComponent },
-     *     { path: "/about", component: AboutComponent }
-     *   ],
-     *   defaultRoute: { path: "/404", component: NotFoundComponent }
-     * });
-     *
-     * // Navigate programmatically:
-     * app.router.navigate("/about");
-     */
     install(eleva, options = {}) {
       // Automatically register routed components if provided as definitions.
       const routes = options.routes || [];
