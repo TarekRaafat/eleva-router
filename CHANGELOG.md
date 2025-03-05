@@ -6,7 +6,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## v1.0.2-alpha ✨ - (04-03-2025)
+## v1.0.3-alpha ✨ - (06-03-2025)
+
+### ➕ Added
+
+- _N/A_ – No additions in this release.
+
+### 🎛️ Changed
+
+- _N/A_ – No changes in this release.
+
+### 🔧 Fixed
+
+- **Hash Mode Navigation:**
+  - Fixed an issue where calling `navigate("/")` in hash mode did not update the view. The router now uses `history.replaceState` to remove the hash from the URL and properly re-renders the home route.
+- **Query Mode Navigation:**
+  - Corrected behavior so that navigating to the home route in query mode removes the `page` parameter instead of setting it to `%2F`.
+  - Improved handling of URLs so that both `?page=about` and `/ ?page=about` correctly navigate to the "about" route.
+- **Container Clearing:**
+  - Added container clearing before mounting a new component to ensure that the previous view is fully removed.
+- **Path Normalization:**
+  - Improved normalization so that paths without a leading slash are automatically prefixed with `/`, ensuring consistent route matching.
+- **General Improvements:**
+  - Ensured that the routing container is cleared before mounting a new component to avoid residual content.
+  - Improved injection of the `route` object and the `navigate` function directly into the component’s setup context, ensuring they are accessible and correctly bound.
+- **Route Change Trigger:**
+  - Updated the `navigate` method to explicitly call `this.routeChanged()` after updating the URL to ensure the view updates immediately.
+
+---
+
+## v1.0.2-alpha - (04-03-2025)
 
 ### ➕ Added
 
