@@ -2,7 +2,7 @@
 
 **Eleva Router** is the official router plugin for Eleva.js, a minimalist, lightweight, pure vanilla JavaScript frontend runtime framework. This plugin provides flexible client-side routing functionality for Eleva.js applications. It supports three routing modes—hash, query, and history—and automatically injects route information (path, query parameters, and full URL) along with a navigation function directly into your component’s setup context.
 
-**Version:** `v1.0.2-alpha`
+**Version:** `v1.0.3-alpha`
 
 > **Note:** This plugin is currently in alpha. APIs may change until a stable release.
 

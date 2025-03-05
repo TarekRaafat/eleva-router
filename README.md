@@ -7,7 +7,7 @@
 [![Minified Size](https://badgen.net/bundlephobia/min/eleva-router)](https://bundlephobia.com/package/eleva-router)
 [![Gzipped Size](https://badgen.net/bundlephobia/minzip/eleva-router)](https://bundlephobia.com/package/eleva-router)
 
-> **Status:** v1.0.2-alpha – This is an early alpha release. APIs may change until a stable release is announced.
+> **Status:** v1.0.3-alpha – This is an early alpha release. APIs may change until a stable release is announced.
 
 ---
 
