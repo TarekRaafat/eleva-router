@@ -1,5 +1,13 @@
 # Eleva Router Documentation
 
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/tarekraafat/eleva-router?label=github)](https://github.com/TarekRaafat/eleva-router)
+[![Version](https://img.shields.io/npm/v/eleva-router.svg?style=flat)](https://www.npmjs.com/package/eleva-router)
+![100% Javascript](https://img.shields.io/github/languages/top/TarekRaafat/eleva-router?color=yellow)
+![Zero Dependencies](https://img.shields.io/badge/dependencies-0-green.svg)
+[![Minified Size](https://badgen.net/bundlephobia/min/eleva-router)](https://bundlephobia.com/package/eleva-router)
+[![Gzipped Size](https://badgen.net/bundlephobia/minzip/eleva-router)](https://bundlephobia.com/package/eleva-router)
+
 **Eleva Router** is the official router plugin for Eleva.js, a minimalist, lightweight, pure vanilla JavaScript frontend runtime framework. This plugin provides flexible client-side routing functionality for Eleva.js applications. It supports three routing modes—hash, query, and history—and automatically injects route information (path, query parameters, and full URL) along with a navigation function directly into your component’s setup context.
 
 **Version:** `v1.0.4-alpha`
