@@ -51,7 +51,7 @@
 
 The **Eleva Router** plugin extends Eleva.js with client-side routing capabilities. It supports:
 
-- **Hash-based Routing:** Uses URL hash (e.g., `#/pageName`) for routing.
+- **Hash-based Routing:** Uses URL hash (e.g., `#pageName`) for routing.
 - **Query-based Routing:** Uses URL query parameters (e.g., `?page=pageName`) where the `page` query is used as the route.
 - **History-based Routing:** Uses the HTML5 History API (e.g., `/pageName`) for clean URLs.
 
@@ -101,7 +101,7 @@ When installing the plugin via `app.use()`, you can pass a configuration object 
 ### Routing Modes
 
 - **mode** (string): The routing mode to use. Options:
-  - `"hash"` (default) – Uses `window.location.hash` (e.g., `#/pageName`).
+  - `"hash"` (default) – Uses `window.location.hash` (e.g., `#pageName`).
   - `"query"` – Uses `window.location.search` and expects a query parameter named `page` (e.g., `?page=pageName`).
   - `"history"` – Uses `window.location.pathname` with the History API (e.g., `/pageName`).
 
@@ -178,7 +178,7 @@ app.use(ElevaRouter, {
 });
 
 // Programmatically navigate from outside a component:
-app.router.navigate("/about");
+app.router.navigate("about");
 ```
 
 ### Accessing Route Information
@@ -192,7 +192,7 @@ const MyComponent = {
     console.log("Query parameters:", route.query);
     console.log("Full URL:", route.fullUrl);
     // You can also navigate programmatically:
-    // navigate("/about");
+    // navigate("about");
     return {};
   },
   template: (ctx) => `<div>Content here</div>`,
@@ -206,11 +206,11 @@ From within a component or externally, you can navigate by calling the `navigate
 - **Within a component:** Access via the setup context:
   ```js
   // Example inside a component's setup:
-  navigate("/about");
+  navigate("about");
   ```
 - **From outside:** Use the router instance:
   ```js
-  app.router.navigate("/about");
+  app.router.navigate("about");
   ```
 
 ---

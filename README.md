@@ -49,7 +49,7 @@
 
 **Eleva Router** extends Eleva.js with robust client-side routing functionality. It supports three routing modes:
 
-- **Hash-based Routing:** Uses URL hash (e.g. `#/pageName`).
+- **Hash-based Routing:** Uses URL hash (e.g. `#pageName`).
 - **Query-based Routing:** Uses URL query parameters (e.g. `?page=pageName`).
 - **History-based Routing:** Uses the History API for clean URLs (e.g. `/pageName`).
 
@@ -99,7 +99,7 @@ When installing the plugin via `app.use()`, you can pass a configuration object 
 ### Routing Modes
 
 - **mode** (string): The routing mode. Options:
-  - `"hash"` (default) – Uses `window.location.hash` (e.g. `#/pageName`).
+  - `"hash"` (default) – Uses `window.location.hash` (e.g. `#pageName`).
   - `"query"` – Uses `window.location.search` and expects a `page` query parameter (e.g. `?page=pageName`).
   - `"history"` – Uses `window.location.pathname` with the History API (e.g. `/pageName`).
 
@@ -187,7 +187,7 @@ const MyComponent = {
     console.log("Query parameters:", route.query);
     console.log("Full URL:", route.fullUrl);
     // Navigate programmatically if needed:
-    // navigate("/about");
+    // navigate("about");
     return {};
   },
   template: (ctx) => `<div>Content here</div>`,
@@ -199,12 +199,12 @@ const MyComponent = {
 - **Within a Component:**  
   Use the `navigate` function provided in the context:
   ```js
-  navigate("/about");
+  navigate("about");
   ```
 - **From Outside:**  
   Call the router’s `navigate` method:
   ```js
-  app.router.navigate("/about");
+  app.router.navigate("about");
   ```
 
 ---
