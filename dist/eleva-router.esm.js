@@ -1,4 +1,4 @@
-/* eleva-router v1.0.4-alpha | MIT License */
+/* eleva-router v1.0.5-alpha | MIT License */
 /**
  * @class Router
  * @classdesc A Router Plugin for Eleva.js with Multiple Routing Modes
@@ -191,12 +191,28 @@ class Router {
       ...definition
     };
     const originalSetup = wrapped.setup;
+
+    // Override the setup function to inject route information
     wrapped.setup = ctx => {
       ctx.route = routeInfo;
       ctx.navigate = this.navigate.bind(this);
       // Inject route information and navigation function into the context.
       return originalSetup ? originalSetup(ctx) : {};
     };
+
+    // If this component has children, we need to modify its children handling
+    if (wrapped.children) {
+      const originalChildren = {
+        ...wrapped.children
+      };
+      wrapped.children = {};
+
+      // For each child component, wrap it to also include route information
+      Object.keys(originalChildren).forEach(childKey => {
+        const childComp = originalChildren[childKey];
+        wrapped.children[childKey] = this.wrapComponentWithRoute(childComp, routeInfo);
+      });
+    }
     return wrapped;
   }
 }

@@ -6,7 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## v1.0.4-alpha ✨ - (06-03-2025)
+## v1.0.5-alpha ✨ - (08-03-2025)
+
+### ➕ Added
+
+- _N/A_ – No additions in this release.
+
+### 🎛️ Changed
+
+- _N/A_ – No changes in this release.
+
+### 🔧 Fixed
+
+- **Child Component Route Access:**
+  - Fixed an issue where child components couldn't access route information (`path`, `navigate`, etc.) from their setup context.
+  - Enhanced the `wrapComponentWithRoute` method to recursively wrap child components, ensuring route data propagates through the component tree.
+
+---
+
+## v1.0.4-alpha - (06-03-2025)
 
 ### ➕ Added
 
