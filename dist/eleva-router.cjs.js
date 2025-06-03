@@ -1,4 +1,6 @@
 /*! ElevaRouter v1.1.0-alpha | MIT License | https://github.com/TarekRaafat/eleva-router#readme */
+'use strict';
+
 /**
  * @class Router
  * @classdesc A Router Plugin for Eleva.js with Multiple Routing Modes
@@ -518,5 +520,5 @@ const ElevaRouter = {
   }
 };
 
-export { ElevaRouter as default };
-//# sourceMappingURL=eleva-router.esm.js.map
+module.exports = ElevaRouter;
+//# sourceMappingURL=eleva-router.cjs.js.map

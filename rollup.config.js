@@ -1,52 +1,98 @@
 import { babel } from "@rollup/plugin-babel";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
-import commonjs from "@rollup/plugin-commonjs";
 import terser from "@rollup/plugin-terser";
-import pkg from "./package.json" assert { type: "json" };
+import pkg from "./package.json" with { type: "json" };
+
+const name = "ElevaRouter";
+const banner = `/*! ${name} v${pkg.version} | ${pkg.license} License | ${pkg.homepage} */`;
+
+const commonOutputConfig = {
+  name,
+  sourcemap: true,
+  banner,
+};
+
+const terserConfig = {
+  compress: {
+    passes: 2,
+    drop_console: true,
+    drop_debugger: true,
+    pure_funcs: ["console.log", "console.warn"],
+    unsafe_arrows: true,
+    unsafe_methods: true,
+    unsafe_proto: true,
+    keep_fargs: false,
+    toplevel: true,
+    pure_getters: true,
+    reduce_vars: true,
+    collapse_vars: true,
+  },
+  mangle: {
+    toplevel: true,
+  },
+  format: {
+    comments: /^!/,
+  },
+};
+
+const commonPlugins = [
+  nodeResolve({
+    browser: true,
+  }),
+  babel({
+    babelHelpers: "bundled",
+    exclude: "node_modules/**",
+    presets: [
+      [
+        "@babel/preset-env",
+        {
+          targets: pkg.browserslist,
+          bugfixes: true,
+          loose: true,
+          modules: false,
+          useBuiltIns: false,
+          corejs: false,
+        },
+      ],
+    ],
+  }),
+];
 
 export default {
   input: "src/index.js",
   output: [
     {
-      file: "dist/eleva-router.umd.js",
-      format: "umd",
-      name: "ElevaRouter",
+      ...commonOutputConfig,
+      file: "./dist/eleva-router.cjs.js",
+      format: "cjs",
       exports: "default",
-      sourcemap: true,
-      banner: `/* eleva-router v${pkg.version} | MIT License */`,
     },
     {
-      file: "dist/eleva-router.esm.js",
+      ...commonOutputConfig,
+      file: "./dist/eleva-router.esm.js",
       format: "es",
-      name: "ElevaRouter",
       exports: "default",
-      sourcemap: true,
-      banner: `/* eleva-router v${pkg.version} | MIT License */`,
     },
     {
-      file: "dist/eleva-router.min.js",
+      ...commonOutputConfig,
+      file: "./dist/eleva-router.umd.js",
       format: "umd",
-      name: "ElevaRouter",
-      exports: "default",
-      sourcemap: true,
-      plugins: [terser()],
+    },
+    {
+      ...commonOutputConfig,
+      file: "./dist/eleva-router.umd.min.js",
+      format: "umd",
+      plugins: [terser(terserConfig)],
     },
   ],
+  treeshake: {
+    moduleSideEffects: false,
+    propertyReadSideEffects: false,
+    tryCatchDeoptimization: false,
+    annotations: false,
+    unknownGlobalSideEffects: false,
+  },
   plugins: [
-    nodeResolve(),
-    commonjs(),
-    babel({
-      babelHelpers: "bundled",
-      presets: [
-        [
-          "@babel/preset-env",
-          {
-            targets: "> 0.25%, not dead",
-            bugfixes: true,
-            loose: true,
-          },
-        ],
-      ],
-    }),
+    ...commonPlugins
   ],
 };

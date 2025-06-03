@@ -6,7 +6,68 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## v1.0.5-alpha ✨ - (08-03-2025)
+## v1.1.0-alpha ✨ - (03-06-2025)
+
+### ➕ Added
+
+- **Dynamic Route Parameters:**
+  - Added support for dynamic route parameters (e.g. "/users/:id") which are passed to components via `route.params`.
+  - Implemented parameter extraction and matching for dynamic segments in routes.
+  - Added support for catch-all parameters (e.g. ":path\*") for flexible route matching.
+- **Enhanced Error Handling:**
+  - Added comprehensive error handling throughout the router with detailed error messages.
+  - Implemented graceful error recovery for route matching and component mounting.
+- **Router Lifecycle Management:**
+  - Added `destroy()` method to properly clean up router resources and event listeners.
+  - Implemented router state tracking with `isStarted` flag.
+  - Added support for manual router start with `autoStart` option.
+- **Query Parameter Customization:**
+  - Added `queryParam` option to customize the query parameter name used for routing.
+
+### 🎛️ Changed
+
+- **Router Initialization:**
+  - Made router initialization asynchronous with proper error handling.
+  - Improved component registration process with better error handling.
+- **Route Matching:**
+  - Completely revamped route matching system to support dynamic parameters.
+  - Added path segment parsing for more efficient route matching.
+  - Improved handling of root path ("/") in route matching.
+- **Navigation:**
+  - Enhanced `navigate` method to support parameter injection into paths.
+  - Improved URL handling across all routing modes.
+  - Added proper error handling for navigation operations.
+- **Component Wrapping:**
+  - Enhanced component wrapping to include route parameters in the context.
+  - Improved error handling during component mounting and unmounting.
+
+### 🔧 Fixed
+
+- **Event Listener Management:**
+  - Fixed potential memory leaks by properly tracking and cleaning up event listeners.
+- **Component Cleanup:**
+  - Improved component cleanup by properly unmounting previous components before mounting new ones.
+- **Path Handling:**
+  - Fixed path normalization and validation across all routing modes.
+  - Improved handling of empty paths and root path in all routing modes.
+
+### ⚠️ BREAKING CHANGES
+
+- **Router Initialization:**
+  - The `start()` method is now asynchronous and returns a Promise. Any code that calls `router.start()` must be updated to use `await` or handle the Promise.
+  - The router no longer automatically starts by default. Use the `autoStart: true` option to maintain the previous behavior.
+- **Component Registration:**
+  - The router now uses `eleva._components.get()` instead of direct property access for component lookup. This may affect custom component registration systems.
+- **Route Matching:**
+  - The `matchRoute()` method now returns `null` instead of `undefined` when no route is found.
+  - Route matching is now case-sensitive by default for better security and predictability.
+- **Navigation:**
+  - The `navigate()` method is now asynchronous and returns a Promise. All navigation calls must be updated to use `await` or handle the Promise.
+  - The `navigate()` method now requires proper error handling as it may throw errors in invalid cases.
+
+---
+
+## v1.0.5-alpha - (08-03-2025)
 
 ### ➕ Added
 
@@ -64,7 +125,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Improved normalization so that paths without a leading slash are automatically prefixed with `/`, ensuring consistent route matching.
 - **General Improvements:**
   - Ensured that the routing container is cleared before mounting a new component to avoid residual content.
-  - Improved injection of the `route` object and the `navigate` function directly into the component’s setup context, ensuring they are accessible and correctly bound.
+  - Improved injection of the `route` object and the `navigate` function directly into the component's setup context, ensuring they are accessible and correctly bound.
 - **Route Change Trigger:**
   - Updated the `navigate` method to explicitly call `this.routeChanged()` after updating the URL to ensure the view updates immediately.
 
@@ -113,7 +174,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     - **Hash-based routing:** Uses `window.location.hash` (e.g. `#/pageName`).
     - **Query-based routing:** Uses URL query parameters (e.g. `?page=pageName`).
     - **History-based routing:** Uses `window.location.pathname` with the History API (e.g. `/pageName`).
-  - Automatic injection of route information (current path, query parameters, and full URL) directly into the component’s setup context as `route`.
+  - Automatic injection of route information (current path, query parameters, and full URL) directly into the component's setup context as `route`.
   - Exposure of a `navigate` function in the setup context for programmatic navigation.
   - Support for a `defaultRoute` option to specify a fallback route when no route matches.
   - Automatic registration of routed components when provided as definitions to avoid redundant calls to `app.component()`.

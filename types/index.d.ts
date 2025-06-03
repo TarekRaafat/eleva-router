@@ -1,7 +1,7 @@
 export default ElevaRouter;
 export type RouteDefinition = {
     /**
-     * - The URL path (e.g., "/" or "/about").
+     * - The URL path (e.g., "/" or "/about" or "/users/:id").
      */
     path: string;
     /**
@@ -30,8 +30,14 @@ export type RouterOptions = {
      * - A default route object to use when no route matches.
      */
     defaultRoute?: RouteDefinition | undefined;
+    /**
+     * - Whether to automatically start the router.
+     * If set to false, the router must be manually started using eleva.router.start().
+     */
+    autoStart?: boolean | undefined;
 };
 declare namespace ElevaRouter {
+    let name: string;
     function install(eleva: any, options?: {}): void;
 }
 //# sourceMappingURL=index.d.ts.map

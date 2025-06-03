@@ -1,18 +1,68 @@
 {
   "name": "eleva-router",
-  "version": "1.0.5-alpha",
+  "version": "1.1.0-alpha",
   "description": "A Router Plugin for Eleva.",
   "type": "module",
-  "main": "dist/eleva-router.js",
-  "module": "dist/eleva-router.esm.js",
-  "unpkg": "dist/eleva-router.min.js",
-  "types": "dist/eleva-router.d.ts",
+  "private": false,
+  "license": "MIT",
+  "author": {
+    "name": "Tarek Raafat",
+    "email": "tarek.m.raafat@gmail.com",
+    "url": "https://www.tarekraafat.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TarekRaafat/eleva-router.git"
+  },
+  "homepage": "https://github.com/TarekRaafat/eleva-router#readme",
+  "bugs": {
+    "url": "https://github.com/TarekRaafat/eleva-router/issues",
+    "email": "tarek.m.raafat@gmail.com"
+  },
+  "readme": "https://github.com/TarekRaafat/eleva-router#readme",
+  "main": "./dist/eleva-router.cjs.js",
+  "module": "./dist/eleva-router.esm.js",
+  "browser": "./dist/eleva-router.umd.min.js",
+  "types": "./dist/eleva-router.d.ts",
+  "unpkg": "./dist/eleva-router.umd.min.js",
+  "jsdelivr": "./dist/eleva-router.umd.min.js",
   "exports": {
     ".": {
-      "require": "./dist/eleva-router.js",
-      "import": "./dist/eleva-router.esm.js"
-    }
+      "types": "./dist/eleva-router.d.ts",
+      "import": "./dist/eleva-router.esm.js",
+      "require": "./dist/eleva-router.cjs.js",
+      "node": "./dist/eleva-router.cjs.js",
+      "browser": "./dist/eleva-router.umd.min.js",
+      "default": "./dist/eleva-router.umd.min.js"
+    },
+    "./esm": {
+      "types": "./dist/eleva-router.d.ts",
+      "import": "./dist/eleva-router.esm.js",
+      "require": "./dist/eleva-router.esm.js",
+      "browser": "./dist/eleva-router.umd.min.js"
+    },
+    "./cjs": {
+      "types": "./dist/eleva-router.d.ts",
+      "require": "./dist/eleva-router.cjs.js"
+    },
+    "./umd": {
+      "types": "./dist/eleva-router.d.ts",
+      "import": "./dist/eleva-router.umd.js",
+      "browser": "./dist/eleva-router.umd.js"
+    },
+    "./browser": {
+      "types": "./dist/eleva-router.d.ts",
+      "import": "./dist/eleva-router.umd.min.js",
+      "browser": "./dist/eleva-router.umd.min.js"
+    },
+    "./package.json": "./package.json"
   },
+  "files": [
+    "dist",
+    "types",
+    "src"
+  ],
+  "sideEffects": false,
   "scripts": {
     "dev": "rollup -c -w",
     "build": "rollup -c",
@@ -21,36 +71,21 @@
     "build:all": "npm run build && npm run build:types && npm run build:types:bundle",
     "prepublishOnly": "npm run build && npm run build:types && npm run build:types:bundle"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TarekRaafat/eleva-router.git"
-  },
-  "keywords": [
-    "eleva",
-    "router"
+  "browserslist": [
+    "> 0.25%",
+    "last 2 versions",
+    "not dead",
+    "not op_mini all",
+    "not ie 11"
   ],
-  "author": {
-    "name": "Tarek Raafat",
-    "email": "tarek.m.raafat@gmail.com",
-    "url": "https://www.tarekraafat.com"
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/TarekRaafat/eleva-router/issues",
-    "email": "tarek.m.raafat@gmail.com"
-  },
-  "homepage": "https://github.com/TarekRaafat/eleva-router#readme",
-  "files": [
-    "dist",
-    "types",
-    "src"
-  ],
-  "sideEffects": false,
   "devDependencies": {
     "@babel/core": "^7.26.9",
     "@babel/preset-env": "^7.26.9",
     "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "eslint": "^9.21.0",
@@ -58,5 +93,12 @@
     "rollup": "^4.34.9",
     "rollup-plugin-dts": "^6.1.1",
     "typescript": "^5.8.2"
-  }
+  },
+  "keywords": [
+    "eleva",
+    "router",
+    "routing",
+    "eleva-router",
+    "eleva-routing"
+  ]
 }
