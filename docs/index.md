@@ -115,7 +115,7 @@ or
 
 ```html
 <!-- unpkg -->
-<script src="https://unpkg.com/eleva-router/dist/eleva-router.min.js"></script>
+<script src="https://unpkg.com/eleva-router"></script>
 ```
 
 ---
