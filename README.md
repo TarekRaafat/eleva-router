@@ -300,7 +300,7 @@ For comprehensive documentation, advanced features, and best practices:
 
 - 💬 [GitHub Discussions](https://github.com/TarekRaafat/eleva-router/discussions)
 - 🐛 [Report Issues](https://github.com/TarekRaafat/eleva-router/issues)
-- 📚 [Full Documentation](docs/index.md)
+- 📚 [Full Documentation](https://router.elevajs.com/)
 
 ## 🤝 Contributing
 
