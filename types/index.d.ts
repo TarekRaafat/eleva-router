@@ -15,9 +15,11 @@ export type RouteDefinition = {
 };
 export type RouterOptions = {
     /**
-     * - The DOM element where routed components will be mounted.
+     * - The app layout DOM element. The router will look for a view element
+     * (with data-view attribute, .view class, or #view id) within this layout to mount routed components.
+     * If no view element is found, the layout element itself will be used as the mounting target.
      */
-    container: HTMLElement;
+    layout: HTMLElement;
     /**
      * - The routing mode: "hash", "query", or "history".
      */

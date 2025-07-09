@@ -1,4 +1,4 @@
-/*! ElevaRouter v1.1.0-alpha | MIT License | https://github.com/TarekRaafat/eleva-router#readme */
+/*! ElevaRouter v1.2.0-alpha | MIT License | https://github.com/TarekRaafat/eleva-router#readme */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -23,22 +23,29 @@
    *
    * @param {Object} eleva - The Eleva instance.
    * @param {Object} options - Router configuration options.
-   * @param {HTMLElement} options.container - The DOM element where routed components will be mounted.
+   * @param {HTMLElement} options.layout - The app layout DOM element. The router will look for a view element
+   *   (#{viewSelector} id, .{viewSelector} class, <{viewSelector}> element, or data-{viewSelector} attribute) within this layout to mount routed components.
+   *   Priority is based on selection speed from fastest to slowest (micro-optimization). If no view element is found, the layout element itself will be used as the mounting target.
    * @param {string} [options.mode="hash"] - The routing mode ("hash", "query", or "history").
    * @param {Array<Object>} options.routes - An array of route objects. Each route object should have:
    *   - {string} path - The URL path (e.g. "/" or "/about" or "/users/:id").
    *   - {string|Object} component - The component name (if registered globally) or a component definition.
    *   - {Object} [props] - Additional props to pass to the component.
    * @param {string} [options.queryParam="page"] - The query parameter to use for routing.
+   * @param {string} [options.viewSelector="view"] - The selector name for the view element. Used to find elements like #{viewSelector}, .{viewSelector}, <{viewSelector}>, or data-{viewSelector}.
    * @param {Object} [options.defaultRoute] - A default route object used when no route matches.
    */
   class Router {
     constructor(eleva, options = {}) {
       this.eleva = eleva;
-      this.container = options.container;
-      if (!this.container) {
-        throw new Error("Router requires a container DOM element in options.");
+      this.layout = options.layout;
+      if (!this.layout) {
+        throw new Error("Router requires a layout DOM element in options.");
       }
+
+      // Find the view element within the layout, or use layout as fallback
+      this.viewSelector = options.viewSelector || "view"; // Default view selector
+      this.view = this.layout.querySelector(`#${this.viewSelector}`) || this.layout.querySelector(`.${this.viewSelector}`) || this.layout.querySelector(this.viewSelector) || this.layout.querySelector(`[data-${this.viewSelector}]`) || this.layout;
       this.routes = options.routes || [];
       this.mode = options.mode || "hash"; // "hash", "query", or "history"
       this.queryParam = options.queryParam || "page"; // The query parameter to use for routing
@@ -126,7 +133,7 @@
         this.eventListeners = [];
 
         // Unmount current component
-        const existingInstance = this.container._eleva_instance;
+        const existingInstance = this.view._eleva_instance;
         if (existingInstance) {
           await existingInstance.unmount();
         }
@@ -172,7 +179,7 @@
         }
 
         // Unmount the previous component instance if it exists
-        const existingInstance = this.container._eleva_instance;
+        const existingInstance = this.view._eleva_instance;
         if (existingInstance) {
           try {
             await existingInstance.unmount();
@@ -196,7 +203,7 @@
               matchedRoute: this.defaultRoute.path
             });
             const props = this.defaultRoute.props || {};
-            await this.eleva.mount(this.container, wrappedComponent, props);
+            await this.eleva.mount(this.view, wrappedComponent, props);
           } catch (error) {
             console.error("Error mounting default route component:", error);
           }
@@ -214,7 +221,7 @@
               matchedRoute: route.path
             });
             const props = route.props || {};
-            await this.eleva.mount(this.container, wrappedComponent, props);
+            await this.eleva.mount(this.view, wrappedComponent, props);
           } catch (error) {
             console.error("Error mounting route component:", error);
           }
@@ -462,7 +469,9 @@
 
   /**
    * @typedef {Object} RouterOptions
-   * @property {HTMLElement} container - The DOM element where routed components will be mounted.
+   * @property {HTMLElement} layout - The app layout DOM element. The router will look for a view element
+   *   (with data-view attribute, .view class, or #view id) within this layout to mount routed components.
+   *   If no view element is found, the layout element itself will be used as the mounting target.
    * @property {string} [mode="hash"] - The routing mode: "hash", "query", or "history".
    * @property {Array<RouteDefinition>} routes - An array of route definitions.
    * @property {RouteDefinition} [defaultRoute] - A default route object to use when no route matches.
