@@ -158,7 +158,7 @@ When installing the plugin via `app.use()`, you can pass a configuration object 
 
 Below is an example of setting up Eleva Router with Eleva.js:
 
-```js
+````js
 import Eleva from "eleva";
 import ElevaRouter from "eleva-router";
 
@@ -202,7 +202,7 @@ const NotFoundComponent = {
 
 // Install the router plugin
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history", // Can be "hash", "query", or "history"
   routes: [
     { path: "/", component: HomeComponent },
@@ -212,7 +212,83 @@ app.use(ElevaRouter, {
 });
 
 // Router starts automatically unless autoStart: false
+
+### App Layout and View Element
+
+The router uses an app layout concept where you provide a layout element that contains a dedicated view element for mounting routed components. This allows you to maintain persistent layout elements (like navigation, headers, footers) while only the view content changes during navigation.
+
+The router automatically looks for a view element within your layout using the following selectors (in order of priority, based on selection speed):
+1. `#view` - Element with `view` id (fastest - ID selector)
+2. `.view` - Element with `view` class (fast - class selector)
+3. `<view>` - Native `<view>` HTML element (medium - tag selector)
+4. `[data-view]` - Element with `data-view` attribute (slowest - attribute selector)
+5. Falls back to the layout element itself if no view element is found
+
+> **Note:** The difference in selection speed between these selector types is negligible for most practical cases. This ordering is a micro-optimization that may provide minimal performance benefits in applications with very frequent route changes.
+
+**Example HTML Structure:**
+
+```html
+<div id="app">
+  <!-- This is your layout element -->
+  <header>
+    <nav>
+      <a href="#/">Home</a>
+      <a href="#/about">About</a>
+    </nav>
+  </header>
+
+  <!-- This is your view element - router will mount components here -->
+  <main data-view></main>
+
+  <footer>
+    <p>&copy; 2024 My App</p>
+  </footer>
+</div>
 ```
+
+**Alternative View Element Selectors:**
+
+```html
+<!-- Using ID (highest priority) -->
+<div id="app">
+  <header>...</header>
+  <main id="view"></main>
+  <!-- Router will use this -->
+  <footer>...</footer>
+</div>
+
+<!-- Using native <view> element -->
+<div id="app">
+  <header>...</header>
+  <view></view>
+  <!-- Router will use this -->
+  <footer>...</footer>
+</div>
+
+<!-- Using class -->
+<div id="app">
+  <header>...</header>
+  <main class="view"></main>
+  <!-- Router will use this -->
+  <footer>...</footer>
+</div>
+
+<!-- Using data-view attribute -->
+<div id="app">
+  <header>...</header>
+  <main data-view></main>
+  <!-- Router will use this -->
+  <footer>...</footer>
+</div>
+
+<!-- Fallback to layout -->
+<div id="app">
+  <!-- No view element found, router will use this div -->
+</div>
+```
+
+````
 
 ### Manual Router Control
 
@@ -220,7 +296,7 @@ For applications that need precise control over router initialization:
 
 ```js
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history",
   routes: [
     { path: "/", component: HomeComponent },
@@ -269,7 +345,7 @@ Eleva Router v1.1.0-alpha now supports dynamic route segments using the colon sy
 
 ```js
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history",
   routes: [
     { path: "/", component: HomeComponent },
@@ -359,7 +435,7 @@ new Router(eleva, options);
 
 - **eleva:** The Eleva.js instance.
 - **options:** Configuration object with:
-  - `container`: (HTMLElement) Where routed components will be mounted.
+  - `layout`: (HTMLElement) App layout element. Router looks for a view element (#view, .view, <view>, or data-view) within this layout to mount components. Priority based on selection speed (micro-optimization). If no view element is found, the layout itself is used.
   - `mode`: (string) "hash" (default), "query", or "history".
   - `queryParam`: (string) Query parameter name for query mode (default: "page").
   - `routes`: (array) Array of route objects.
@@ -430,7 +506,7 @@ new Router(eleva, options);
 
   The installation process:
 
-  1. Validates options and container element
+  1. Validates options and layout element
   2. Auto-registers component definitions
   3. Creates and attaches router instance
   4. Defers async startup using `queueMicrotask` if `autoStart` is true
@@ -443,7 +519,7 @@ new Router(eleva, options);
 
 ```js
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "hash",
   routes: [
     { path: "/", component: HomeComponent },
@@ -458,7 +534,7 @@ app.use(ElevaRouter, {
 ```js
 // Default query parameter
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "query",
   routes: [
     { path: "/", component: HomeComponent },
@@ -469,7 +545,7 @@ app.use(ElevaRouter, {
 
 // Custom query parameter
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "query",
   queryParam: "view", // Custom parameter name
   routes: [
@@ -484,7 +560,7 @@ app.use(ElevaRouter, {
 
 ```js
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history",
   routes: [
     { path: "/", component: HomeComponent },
@@ -497,7 +573,7 @@ app.use(ElevaRouter, {
 
 ```js
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history",
   routes: [
     { path: "/", component: HomeComponent },
@@ -532,7 +608,7 @@ const ProductDetailComponent = {
 ```js
 // E-commerce application
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "query",
   queryParam: "category",
   routes: [
@@ -545,7 +621,7 @@ app.use(ElevaRouter, {
 
 // Admin panel
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "query",
   queryParam: "section",
   routes: [
@@ -558,7 +634,7 @@ app.use(ElevaRouter, {
 
 // Content management
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "query",
   queryParam: "content",
   routes: [
@@ -576,7 +652,7 @@ app.use(ElevaRouter, {
 const app = new Eleva("MyApp");
 
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history",
   routes: [
     { path: "/", component: HomeComponent },
@@ -622,7 +698,7 @@ const ErrorBoundaryComponent = {
 };
 
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history",
   routes: [
     { path: "/", component: HomeComponent },
@@ -835,7 +911,7 @@ const UserComponent = {
   Ensure your routes are correctly defined and that the URL exactly matches one of your route paths or patterns. Check the console for warnings about unmatched routes. If not, the `defaultRoute` (if provided) will be used.
 
 - **Component Not Mounted:**
-  Verify that the container DOM element provided in the options exists and is valid. Ensure the component is properly defined.
+  Verify that the layout DOM element provided in the options exists and is valid. Ensure the component is properly defined.
 
 - **Routing Mode Issues:**
   Double-check that the mode specified in the options is one of `"hash"`, `"query"`, or `"history"`. Check browser console for validation errors.
@@ -850,7 +926,7 @@ const UserComponent = {
   Ensure you call `app.router.destroy()` when your application shuts down. Check for duplicate router instances.
 
 - **Router Startup Failures:**
-  Check the browser console for specific error messages. Ensure the container element exists when the router starts.
+  Check the browser console for specific error messages. Ensure the layout element exists when the router starts.
 
 - **Hash Mode Issues:**
   In hash mode, ensure you're not manually manipulating `window.location.hash` outside of the router's navigation methods.

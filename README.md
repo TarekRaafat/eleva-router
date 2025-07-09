@@ -56,13 +56,40 @@ const About = {
 
 // Setup router
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history", // "hash" | "query" | "history"
   routes: [
     { path: "/", component: Home },
     { path: "/about", component: About },
   ],
 });
+```
+
+## 🏗️ App Layout & View Element
+
+The router uses an app layout concept where you provide a layout element that contains a dedicated view element for mounting routed components. This allows you to maintain persistent layout elements (like navigation, headers, footers) while only the view content changes during navigation.
+
+The router automatically looks for a view element within your layout using these selectors (in order of priority, based on selection speed):
+
+1. `#view` - Element with `view` id (fastest - ID selector)
+2. `.view` - Element with `view` class (fast - class selector)
+3. `<view>` - Native `<view>` HTML element (medium - tag selector)
+4. `[data-view]` - Element with `data-view` attribute (slowest - attribute selector)
+5. Falls back to the layout element itself if no view element is found
+
+> **Note:** The difference in selection speed between these selector types is negligible for most practical cases. This ordering is a micro-optimization that may provide minimal performance benefits in applications with very frequent route changes.
+
+**Example HTML Structure:**
+
+```html
+<div id="app">
+  <header>
+    <nav><a href="#/">Home</a> <a href="#/about">About</a></nav>
+  </header>
+  <main id="view"></main>
+  <!-- Router mounts components here -->
+  <footer>&copy; 2024</footer>
+</div>
 ```
 
 ## 🎯 Dynamic Routes
@@ -85,14 +112,14 @@ const UserProfile = {
 
 ## 🔧 Configuration
 
-| Option         | Type        | Default      | Description                                                          |
-| -------------- | ----------- | ------------ | -------------------------------------------------------------------- |
-| `container`    | HTMLElement | **required** | DOM element where components mount                                   |
-| `mode`         | string      | `"hash"`     | Routing mode: `"hash"`, `"query"`, or `"history"`                    |
-| `queryParam`   | string      | `"page"`     | Query parameter name for query mode (`?page=about` vs `?view=about`) |
-| `routes`       | array       | `[]`         | Array of route objects                                               |
-| `defaultRoute` | object      | `null`       | Fallback route for unmatched paths                                   |
-| `autoStart`    | boolean     | `true`       | Auto-start router after installation                                 |
+| Option         | Type        | Default      | Description                                                                                                                                                                                                                                      |
+| -------------- | ----------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `layout`       | HTMLElement | **required** | App layout element. Router looks for a view element (#view, .view, <view>, or data-view) within this layout to mount components. Priority based on selection speed (micro-optimization). If no view element is found, the layout itself is used. |
+| `mode`         | string      | `"hash"`     | Routing mode: `"hash"`, `"query"`, or `"history"`                                                                                                                                                                                                |
+| `queryParam`   | string      | `"page"`     | Query parameter name for query mode (`?page=about` vs `?view=about`)                                                                                                                                                                             |
+| `routes`       | array       | `[]`         | Array of route objects                                                                                                                                                                                                                           |
+| `defaultRoute` | object      | `null`       | Fallback route for unmatched paths                                                                                                                                                                                                               |
+| `autoStart`    | boolean     | `true`       | Auto-start router after installation                                                                                                                                                                                                             |
 
 ## 📱 Navigation
 
@@ -165,7 +192,7 @@ app.use(ElevaRouter, {
 ```js
 // E-commerce with custom parameter
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "query",
   queryParam: "category", // ?category=electronics
   routes: [
@@ -177,7 +204,7 @@ app.use(ElevaRouter, {
 
 // Admin panel
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "query",
   queryParam: "section", // ?section=users
   routes: [
@@ -233,7 +260,7 @@ const routes = [
 ];
 
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   mode: "history",
   routes,
   defaultRoute: {
@@ -252,7 +279,7 @@ app.use(ElevaRouter, {
 
 ```js
 app.use(ElevaRouter, {
-  container: document.getElementById("app"),
+  layout: document.getElementById("app"),
   routes: [...],
   autoStart: false // Don't start automatically
 });
@@ -291,8 +318,8 @@ For comprehensive documentation, advanced features, and best practices:
 
 **Common Issues:**
 
-- **Routes not matching**: Check path syntax and ensure container exists
-- **Components not mounting**: Verify component definitions and container element
+- **Routes not matching**: Check path syntax and ensure layout exists
+- **Components not mounting**: Verify component definitions and layout element
 - **Navigation not working**: Use `navigate()` from context or `app.router.navigate()`
 - **Memory issues**: Call `app.router.destroy()` during cleanup
 
