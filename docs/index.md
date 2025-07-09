@@ -10,7 +10,7 @@
 
 **Eleva Router** is the official router plugin for Eleva.js, a minimalist, lightweight, pure vanilla JavaScript frontend runtime framework. This plugin provides flexible client-side routing functionality for Eleva.js applications. It supports three routing modes—hash, query, and history—and automatically injects route information (path, query parameters, dynamic route parameters, and full URL) along with a navigation function directly into your component's setup context.
 
-**Version:** `v1.1.0-alpha`
+**Version:** `v1.2.0-alpha`
 
 > **Status:** Stable release with enhanced error handling, memory management, and dynamic route parameters support.
 
@@ -79,7 +79,7 @@ The **Eleva Router** plugin extends Eleva.js with robust client-side routing cap
 - **Query-based Routing:** Uses URL query parameters (e.g., `?page=pageName`) where the `page` query is used as the route.
 - **History-based Routing:** Uses the HTML5 History API (e.g., `/pageName`) for clean URLs.
 
-The plugin automatically injects a `route` object and a `navigate` function into your component's setup context so that you can easily access current route information and perform navigation programmatically. With v1.1.0-alpha, the plugin includes enhanced error handling, memory management, and support for dynamic route parameters.
+The plugin automatically injects a `route` object and a `navigate` function into your component's setup context so that you can easily access current route information and perform navigation programmatically. With v1.2.0-alpha, the plugin includes configurable view selectors, enhanced error handling, memory management, and support for dynamic route parameters.
 
 ---
 
@@ -378,7 +378,7 @@ const MyComponent = {
 
 ### Dynamic Route Parameters
 
-Eleva Router v1.1.0-alpha now supports dynamic route segments using the colon syntax:
+Eleva Router supports dynamic route segments using the colon syntax:
 
 ```js
 app.use(ElevaRouter, {
@@ -786,7 +786,7 @@ app.use(ElevaRouter, {
 
 ### Built-in Error Recovery
 
-Eleva Router v1.1.0-alpha includes comprehensive error handling:
+Eleva Router includes comprehensive error handling:
 
 - **Component Mount Failures:** If a component fails to mount, the error is logged and the router continues operating
 - **Route Parsing Errors:** Malformed URLs are handled gracefully with fallback to default route
@@ -834,7 +834,7 @@ Eleva Router automatically manages memory to prevent leaks:
 
 ### Memory Leak Prevention
 
-Best practices implemented in v1.1.0-alpha:
+Best practices implemented:
 
 - **Event Listener Tracking:** All event listeners are stored and cleaned up
 - **Component Lifecycle:** Proper unmounting prevents dangling references
@@ -925,7 +925,7 @@ const UserComponent = {
    });
    ```
 
-**No action required for most applications** - v1.1.0-alpha is designed to be backward compatible with v1.0.x-alpha usage patterns.
+**No action required for most applications** - v1.2.0-alpha is designed to be backward compatible with v1.0.x-alpha usage patterns.
 
 ---
 

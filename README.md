@@ -10,7 +10,7 @@
 
 The official router plugin for **Eleva.js** - a lightweight, zero-dependency client-side routing solution with support for hash, query, and history modes.
 
-> **Latest:** v1.1.0-alpha with dynamic route parameters, enhanced error handling, and memory management.
+> **Latest:** v1.2.0-alpha with configurable view selectors, dynamic route parameters, enhanced error handling, and memory management.
 
 ## ✨ Features
 

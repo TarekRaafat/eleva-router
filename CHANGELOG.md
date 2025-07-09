@@ -6,7 +6,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ---
 
-## v1.1.0-alpha ✨ - (03-06-2025)
+## v1.2.0-alpha ✨ - (09-07-2025)
+
+### ➕ Added
+
+- **Custom View Selector Support:**
+  - Added `viewSelector` option to allow users to define their own view element selectors.
+  - Implemented dynamic view element selection using customizable selector names (e.g., `#custom`, `.custom`, `<custom>`, or `data-custom`).
+  - Enhanced flexibility for view element identification within app layouts.
+
+### 🎛️ Changed
+
+- **Architectural Refactoring - Layout and View Separation:**
+  - **Breaking Change:** Replaced single `container` concept with dual `layout` and `view` architecture for better separation of concerns.
+  - **Layout Element:** The `options.layout` now represents the main app container where the router searches for view elements.
+  - **View Element:** Router automatically detects view elements within the layout using priority-based selection: `#view` → `.view` → `<view>` → `data-view`.
+  - **Fallback Mechanism:** If no view element is found, the layout element itself becomes the mounting target.
+  - **Enhanced Usability:** This change provides clearer structure for app layouts and better control over where routed components are mounted.
+- **View Element Selection Logic:**
+  - Implemented intelligent view element detection that searches within the layout container.
+  - Added micro-optimized priority system for view element selection (fastest to slowest: ID → class → tag → data attribute).
+  - Enhanced component mounting to use the detected view element instead of the entire layout.
+
+### 🔧 Fixed
+
+- **Documentation and Examples:**
+  - Updated README and documentation to reflect the new layout/view architecture.
+  - Enhanced configuration examples to demonstrate proper layout and view element setup.
+  - Improved clarity on view element selection and customization options.
+
+### ⚠️ BREAKING CHANGES
+
+- **Router Configuration:**
+  - **`options.container` → `options.layout`:** The router now requires a `layout` option instead of `container`. This represents a fundamental change in how the router understands app structure.
+  - **Automatic View Detection:** The router now automatically searches for view elements within the layout, changing the mounting behavior from direct container mounting to intelligent view element detection.
+  - **Backward Compatibility:** Existing code using `options.container` will need to be updated to use `options.layout` and may need to add appropriate view elements to their HTML structure.
+
+---
+
+## v1.1.0-alpha - (03-06-2025)
 
 ### ➕ Added
 

@@ -1,6 +1,6 @@
 {
   "name": "eleva-router",
-  "version": "1.1.0-alpha",
+  "version": "1.2.0-alpha",
   "description": "A Router Plugin for Eleva.",
   "type": "module",
   "private": false,
