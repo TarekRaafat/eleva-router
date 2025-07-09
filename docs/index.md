@@ -31,6 +31,8 @@
     - [Query Parameter Configuration](#query-parameter-configuration)
   - [Usage](#usage)
     - [Basic Setup](#basic-setup)
+    - [App Layout and View Element](#app-layout-and-view-element)
+    - [Custom View Selectors](#custom-view-selectors)
     - [Manual Router Control](#manual-router-control)
     - [Accessing Route Information](#accessing-route-information)
     - [Dynamic Route Parameters](#dynamic-route-parameters)
@@ -50,6 +52,7 @@
     - [Example: History Routing](#example-history-routing)
     - [Example: Dynamic Route Parameters](#example-dynamic-route-parameters)
     - [Example: Custom Query Parameters](#example-custom-query-parameters)
+    - [Example: Custom View Selectors](#example-custom-view-selectors)
     - [Example: Manual Router Control](#example-manual-router-control)
     - [Example: Error Handling](#example-error-handling)
   - [Error Handling \& Recovery](#error-handling--recovery)
@@ -158,7 +161,7 @@ When installing the plugin via `app.use()`, you can pass a configuration object 
 
 Below is an example of setting up Eleva Router with Eleva.js:
 
-````js
+```js
 import Eleva from "eleva";
 import ElevaRouter from "eleva-router";
 
@@ -210,14 +213,15 @@ app.use(ElevaRouter, {
   ],
   defaultRoute: { path: "/404", component: NotFoundComponent },
 });
-
 // Router starts automatically unless autoStart: false
+```
 
 ### App Layout and View Element
 
 The router uses an app layout concept where you provide a layout element that contains a dedicated view element for mounting routed components. This allows you to maintain persistent layout elements (like navigation, headers, footers) while only the view content changes during navigation.
 
 The router automatically looks for a view element within your layout using the following selectors (in order of priority, based on selection speed):
+
 1. `#view` - Element with `view` id (fastest - ID selector)
 2. `.view` - Element with `view` class (fast - class selector)
 3. `<view>` - Native `<view>` HTML element (medium - tag selector)
@@ -225,6 +229,41 @@ The router automatically looks for a view element within your layout using the f
 5. Falls back to the layout element itself if no view element is found
 
 > **Note:** The difference in selection speed between these selector types is negligible for most practical cases. This ordering is a micro-optimization that may provide minimal performance benefits in applications with very frequent route changes.
+
+### Custom View Selectors
+
+You can customize the view element selector by setting the `viewSelector` option. This allows you to use your preferred naming convention:
+
+```js
+// Using custom view selector
+app.use(ElevaRouter, {
+  layout: document.getElementById("app"),
+  viewSelector: "router-view", // Custom selector name
+  routes: [
+    { path: "/", component: HomeComponent },
+    { path: "/about", component: AboutComponent },
+  ],
+});
+```
+
+This configuration will look for elements in this order:
+
+1. `#router-view` - Element with `router-view` id
+2. `.router-view` - Element with `router-view` class
+3. `<router-view>` - Native `<router-view>` HTML element
+4. `data-router-view` - Element with `data-router-view` attribute
+5. Falls back to the layout element itself
+
+**Example HTML with custom selector:**
+
+```html
+<div id="app">
+  <header>Navigation</header>
+  <main id="router-view"></main>
+  <!-- Router will use this -->
+  <footer>Footer</footer>
+</div>
+```
 
 **Example HTML Structure:**
 
@@ -287,8 +326,6 @@ The router automatically looks for a view element within your layout using the f
   <!-- No view element found, router will use this div -->
 </div>
 ```
-
-````
 
 ### Manual Router Control
 
@@ -435,9 +472,10 @@ new Router(eleva, options);
 
 - **eleva:** The Eleva.js instance.
 - **options:** Configuration object with:
-  - `layout`: (HTMLElement) App layout element. Router looks for a view element (#view, .view, <view>, or data-view) within this layout to mount components. Priority based on selection speed (micro-optimization). If no view element is found, the layout itself is used.
+  - `layout`: (HTMLElement) App layout element. Router looks for a view element (#{viewSelector}, .{viewSelector}, <{viewSelector}>, or data-{viewSelector}) within this layout to mount components. Priority based on selection speed (micro-optimization). If no view element is found, the layout itself is used.
   - `mode`: (string) "hash" (default), "query", or "history".
   - `queryParam`: (string) Query parameter name for query mode (default: "page").
+  - `viewSelector`: (string) Selector name for the view element (default: "view").
   - `routes`: (array) Array of route objects.
   - `defaultRoute`: (object, optional) A fallback route object.
 
@@ -644,6 +682,40 @@ app.use(ElevaRouter, {
   ],
 });
 // URLs: ?content=/, ?content=/articles, ?content=/pages
+```
+
+### Example: Custom View Selectors
+
+```js
+// Using "router-view" as the selector
+app.use(ElevaRouter, {
+  layout: document.getElementById("app"),
+  viewSelector: "router-view",
+  routes: [
+    { path: "/", component: HomeComponent },
+    { path: "/about", component: AboutComponent },
+  ],
+});
+
+// Using "main" as the selector
+app.use(ElevaRouter, {
+  layout: document.getElementById("app"),
+  viewSelector: "main",
+  routes: [
+    { path: "/", component: HomeComponent },
+    { path: "/about", component: AboutComponent },
+  ],
+});
+
+// Using "content" as the selector
+app.use(ElevaRouter, {
+  layout: document.getElementById("app"),
+  viewSelector: "content",
+  routes: [
+    { path: "/", component: HomeComponent },
+    { path: "/about", component: AboutComponent },
+  ],
+});
 ```
 
 ### Example: Manual Router Control

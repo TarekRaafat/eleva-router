@@ -17,7 +17,7 @@
  * @param {Object} eleva - The Eleva instance.
  * @param {Object} options - Router configuration options.
  * @param {HTMLElement} options.layout - The app layout DOM element. The router will look for a view element
- *   (#view id, .view class, <view> element, or data-view attribute) within this layout to mount routed components.
+ *   (#{viewSelector} id, .{viewSelector} class, <{viewSelector}> element, or data-{viewSelector} attribute) within this layout to mount routed components.
  *   Priority is based on selection speed from fastest to slowest (micro-optimization). If no view element is found, the layout element itself will be used as the mounting target.
  * @param {string} [options.mode="hash"] - The routing mode ("hash", "query", or "history").
  * @param {Array<Object>} options.routes - An array of route objects. Each route object should have:
@@ -25,6 +25,7 @@
  *   - {string|Object} component - The component name (if registered globally) or a component definition.
  *   - {Object} [props] - Additional props to pass to the component.
  * @param {string} [options.queryParam="page"] - The query parameter to use for routing.
+ * @param {string} [options.viewSelector="view"] - The selector name for the view element. Used to find elements like #{viewSelector}, .{viewSelector}, <{viewSelector}>, or data-{viewSelector}.
  * @param {Object} [options.defaultRoute] - A default route object used when no route matches.
  */
 class Router {
@@ -36,11 +37,12 @@ class Router {
     }
 
     // Find the view element within the layout, or use layout as fallback
+    this.viewSelector = options.viewSelector || "view"; // Default view selector
     this.view =
-      this.layout.querySelector("#view") ||
-      this.layout.querySelector(".view") ||
-      this.layout.querySelector("view") ||
-      this.layout.querySelector("[data-view]") ||
+      this.layout.querySelector(`#${this.viewSelector}`) ||
+      this.layout.querySelector(`.${this.viewSelector}`) ||
+      this.layout.querySelector(this.viewSelector) ||
+      this.layout.querySelector(`[data-${this.viewSelector}]`) ||
       this.layout;
 
     this.routes = options.routes || [];

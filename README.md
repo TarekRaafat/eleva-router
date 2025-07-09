@@ -79,6 +79,26 @@ The router automatically looks for a view element within your layout using these
 
 > **Note:** The difference in selection speed between these selector types is negligible for most practical cases. This ordering is a micro-optimization that may provide minimal performance benefits in applications with very frequent route changes.
 
+### Custom View Selectors
+
+You can customize the view element selector by setting the `viewSelector` option:
+
+```js
+// Using custom view selector
+app.use(ElevaRouter, {
+  layout: document.getElementById("app"),
+  viewSelector: "router-view", // Custom selector name
+  routes: [...]
+});
+```
+
+This will look for elements like:
+
+- `#router-view` (ID)
+- `.router-view` (class)
+- `<router-view>` (tag)
+- `data-router-view` (attribute)
+
 **Example HTML Structure:**
 
 ```html
@@ -112,14 +132,15 @@ const UserProfile = {
 
 ## 🔧 Configuration
 
-| Option         | Type        | Default      | Description                                                                                                                                                                                                                                      |
-| -------------- | ----------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `layout`       | HTMLElement | **required** | App layout element. Router looks for a view element (#view, .view, <view>, or data-view) within this layout to mount components. Priority based on selection speed (micro-optimization). If no view element is found, the layout itself is used. |
-| `mode`         | string      | `"hash"`     | Routing mode: `"hash"`, `"query"`, or `"history"`                                                                                                                                                                                                |
-| `queryParam`   | string      | `"page"`     | Query parameter name for query mode (`?page=about` vs `?view=about`)                                                                                                                                                                             |
-| `routes`       | array       | `[]`         | Array of route objects                                                                                                                                                                                                                           |
-| `defaultRoute` | object      | `null`       | Fallback route for unmatched paths                                                                                                                                                                                                               |
-| `autoStart`    | boolean     | `true`       | Auto-start router after installation                                                                                                                                                                                                             |
+| Option         | Type        | Default      | Description                                                                                                                                                                                                                                                                              |
+| -------------- | ----------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `layout`       | HTMLElement | **required** | App layout element. Router looks for a view element (#{viewSelector}, .{viewSelector}, <{viewSelector}>, or data-{viewSelector}) within this layout to mount components. Priority based on selection speed (micro-optimization). If no view element is found, the layout itself is used. |
+| `mode`         | string      | `"hash"`     | Routing mode: `"hash"`, `"query"`, or `"history"`                                                                                                                                                                                                                                        |
+| `queryParam`   | string      | `"page"`     | Query parameter name for query mode (`?page=about` vs `?view=about`)                                                                                                                                                                                                                     |
+| `viewSelector` | string      | `"view"`     | Selector name for the view element. Used to find elements like `#router-view`, `.router-view`, `<router-view>`, or `data-router-view`.                                                                                                                                                   |
+| `routes`       | array       | `[]`         | Array of route objects                                                                                                                                                                                                                                                                   |
+| `defaultRoute` | object      | `null`       | Fallback route for unmatched paths                                                                                                                                                                                                                                                       |
+| `autoStart`    | boolean     | `true`       | Auto-start router after installation                                                                                                                                                                                                                                                     |
 
 ## 📱 Navigation
 
